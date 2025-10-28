@@ -82,12 +82,12 @@ Output:
 ```
 Starting up http-server, serving ./
 Available on:
-  http://127.0.0.1:8080
-  http://192.168.x.x:8080
+  http://127.0.0.1:8081
+  http://192.168.x.x:8081
 ```
 
 **Access the Application:**
-Open your browser and navigate to: **http://localhost:8080**
+Open your browser and navigate to: **http://localhost:8081**
 
 ### Option 2: Using npm scripts in one terminal
 
