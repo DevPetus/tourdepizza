@@ -1,0 +1,65 @@
+<div class="cart-container">
+    <h2>Shopping Cart</h2>
+
+    <div class="empty-cart" ng-if="cart.items.length === 0">
+        <p>Your cart is empty</p>
+        <button class="btn btn-primary" ng-click="cart.continueShopping()">
+            Browse Menu
+        </button>
+    </div>
+
+    <div ng-if="cart.items.length > 0">
+        <div class="cart-items">
+            <div class="cart-item" ng-repeat="item in cart.items">
+                <div class="item-details">
+                    <h3>{{item.pizza.name}}</h3>
+                    <p>Size: {{item.pizza.size}}</p>
+                    <p ng-if="item.pizza.toppings && item.pizza.toppings.length > 0">
+                        Toppings: <span ng-repeat="topping in item.pizza.toppings">
+                            {{topping.name}}<span ng-if="!$last">, </span>
+                        </span>
+                    </p>
+                </div>
+                
+                <div class="item-quantity">
+                    <label>Quantity:</label>
+                    <input type="number" 
+                           min="1" 
+                           ng-model="item.quantity" 
+                           ng-change="cart.updateQuantity(item.pizza.id, item.quantity)"
+                           style="width: 60px;">
+                </div>
+                
+                <div class="item-price">
+                    ${{(item.pizza.calculatePrice() * item.quantity).toFixed(2)}}
+                </div>
+                
+                <div class="item-actions">
+                    <button class="btn btn-danger btn-small" ng-click="cart.removeItem(item.pizza.id)">
+                        Remove
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <div class="cart-summary">
+            <div class="summary-row">
+                <span class="label">Items:</span>
+                <span class="value">{{cart.itemCount}}</span>
+            </div>
+            <div class="summary-row total">
+                <span class="label">Total:</span>
+                <span class="value">${{cart.total.toFixed(2)}}</span>
+            </div>
+        </div>
+
+        <div class="cart-actions">
+            <button class="btn btn-secondary" ng-click="cart.continueShopping()">
+                Continue Shopping
+            </button>
+            <button class="btn btn-success" ng-click="cart.checkout()">
+                Proceed to Checkout
+            </button>
+        </div>
+    </div>
+</div>
