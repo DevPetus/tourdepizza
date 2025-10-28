@@ -1,0 +1,20 @@
+{
+  "name": "tourdepizza-frontend",
+  "version": "1.0.0",
+  "description": "AngularJS Frontend for Tour de Pizza",
+  "main": "index.html",
+  "scripts": {
+    "start": "http-server -p 8080 -c-1",
+    "test": "echo \"No tests yet\" && exit 0"
+  },
+  "keywords": ["pizza", "ordering", "angularjs"],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "angular": "^1.8.3",
+    "angular-route": "^1.8.3"
+  },
+  "devDependencies": {
+    "http-server": "^14.1.1"
+  }
+}

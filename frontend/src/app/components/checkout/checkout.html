@@ -1,0 +1,140 @@
+<div class="checkout-container">
+    <h2>Checkout</h2>
+
+    <div class="checkout-steps">
+        <div class="step" ng-class="{active: checkout.step === 1, completed: checkout.step > 1}">
+            1. Delivery Address
+        </div>
+        <div class="step" ng-class="{active: checkout.step === 2, completed: checkout.step > 2}">
+            2. Payment
+        </div>
+        <div class="step" ng-class="{active: checkout.step === 3}">
+            3. Confirm
+        </div>
+    </div>
+
+    <div class="error" ng-if="checkout.error">{{checkout.error}}</div>
+
+    <!-- Step 1: Delivery Address -->
+    <div class="checkout-step" ng-if="checkout.step === 1">
+        <h3>Delivery Address</h3>
+        <form ng-submit="checkout.nextStep()">
+            <div class="form-group">
+                <label for="street">Street Address:</label>
+                <input type="text" id="street" ng-model="checkout.address.street" required>
+            </div>
+
+            <div class="form-row">
+                <div class="form-group">
+                    <label for="city">City:</label>
+                    <input type="text" id="city" ng-model="checkout.address.city" required>
+                </div>
+
+                <div class="form-group">
+                    <label for="state">State:</label>
+                    <input type="text" id="state" ng-model="checkout.address.state" required maxlength="2">
+                </div>
+
+                <div class="form-group">
+                    <label for="zipCode">ZIP Code:</label>
+                    <input type="text" id="zipCode" ng-model="checkout.address.zipCode" required pattern="\d{5}">
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label for="instructions">Delivery Instructions (optional):</label>
+                <textarea id="instructions" ng-model="checkout.address.instructions" rows="3"></textarea>
+            </div>
+
+            <button type="submit" class="btn btn-primary" ng-disabled="checkout.isLoading">
+                Continue to Payment
+            </button>
+        </form>
+    </div>
+
+    <!-- Step 2: Payment -->
+    <div class="checkout-step" ng-if="checkout.step === 2">
+        <h3>Payment Information</h3>
+        <form ng-submit="checkout.nextStep()">
+            <div class="form-group">
+                <label for="method">Payment Method:</label>
+                <select id="method" ng-model="checkout.payment.method" required>
+                    <option value="credit_card">Credit Card</option>
+                    <option value="debit_card">Debit Card</option>
+                    <option value="cash">Cash</option>
+                </select>
+            </div>
+
+            <div ng-if="checkout.payment.method !== 'cash'">
+                <div class="form-group">
+                    <label for="cardNumber">Card Number:</label>
+                    <input type="text" id="cardNumber" ng-model="checkout.payment.cardNumber" required>
+                </div>
+
+                <div class="form-group">
+                    <label for="cardHolder">Cardholder Name:</label>
+                    <input type="text" id="cardHolder" ng-model="checkout.payment.cardHolder" required>
+                </div>
+
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="expirationDate">Expiration (MM/YY):</label>
+                        <input type="text" id="expirationDate" ng-model="checkout.payment.expirationDate" 
+                               required pattern="\d{2}/\d{2}">
+                    </div>
+
+                    <div class="form-group">
+                        <label for="cvv">CVV:</label>
+                        <input type="text" id="cvv" ng-model="checkout.payment.cvv" required maxlength="3">
+                    </div>
+                </div>
+            </div>
+
+            <div class="button-group">
+                <button type="button" class="btn btn-secondary" ng-click="checkout.previousStep()">
+                    Back
+                </button>
+                <button type="submit" class="btn btn-primary" ng-disabled="checkout.isLoading">
+                    Continue to Review
+                </button>
+            </div>
+        </form>
+    </div>
+
+    <!-- Step 3: Confirm -->
+    <div class="checkout-step" ng-if="checkout.step === 3">
+        <h3>Order Summary</h3>
+        
+        <div class="order-summary">
+            <h4>Items:</h4>
+            <div class="summary-item" ng-repeat="item in checkout.items">
+                <span>{{item.quantity}}x {{item.pizza.name}} ({{item.pizza.size}})</span>
+                <span>${{(item.pizza.calculatePrice() * item.quantity).toFixed(2)}}</span>
+            </div>
+            
+            <div class="summary-total">
+                <strong>Total: ${{checkout.total.toFixed(2)}}</strong>
+            </div>
+
+            <h4>Delivery Address:</h4>
+            <p>
+                {{checkout.address.street}}<br>
+                {{checkout.address.city}}, {{checkout.address.state}} {{checkout.address.zipCode}}<br>
+                <span ng-if="checkout.address.instructions">Instructions: {{checkout.address.instructions}}</span>
+            </p>
+
+            <h4>Payment Method:</h4>
+            <p>{{checkout.payment.method === 'cash' ? 'Cash on Delivery' : checkout.payment.method.replace('_', ' ')}}</p>
+        </div>
+
+        <div class="button-group">
+            <button type="button" class="btn btn-secondary" ng-click="checkout.previousStep()">
+                Back
+            </button>
+            <button class="btn btn-success" ng-click="checkout.confirmOrder()" ng-disabled="checkout.isLoading">
+                <span ng-if="!checkout.isLoading">Place Order</span>
+                <span ng-if="checkout.isLoading">Processing...</span>
+            </button>
+        </div>
+    </div>
+</div>

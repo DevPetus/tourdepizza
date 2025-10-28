@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html ng-app="tourDePizzaApp">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Tour de Pizza - Order Your Perfect Pizza</title>
+    <link rel="stylesheet" href="src/assets/css/styles.css">
+    <script src="node_modules/angular/angular.min.js"></script>
+    <script src="node_modules/angular-route/angular-route.min.js"></script>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>🍕 Tour de Pizza</h1>
+            <p class="tagline">Customize, Order, Enjoy!</p>
+        </header>
+        
+        <nav>
+            <a href="#!/">Home</a>
+            <a href="#!/menu">Menu</a>
+            <a href="#!/cart">Cart <span id="cart-count" ng-controller="CartCtrl as cart">({{cart.itemCount}})</span></a>
+            <a href="#!/profile">Profile</a>
+        </nav>
+
+        <main ng-view></main>
+
+        <footer>
+            <p>&copy; 2025 Tour de Pizza. All rights reserved.</p>
+        </footer>
+    </div>
+
+    <!-- Load App -->
+    <script src="src/app/app.js"></script>
+    
+    <!-- Load Services -->
+    <script src="src/app/services/ApiService.js"></script>
+    <script src="src/app/services/PizzaService.js"></script>
+    <script src="src/app/services/OrderService.js"></script>
+    <script src="src/app/services/CustomerService.js"></script>
+    <script src="src/app/services/CartService.js"></script>
+    
+    <!-- Load Controllers -->
+    <script src="src/app/components/home/HomeController.js"></script>
+    <script src="src/app/components/menu/MenuController.js"></script>
+    <script src="src/app/components/cart/CartController.js"></script>
+    <script src="src/app/components/checkout/CheckoutController.js"></script>
+    <script src="src/app/components/profile/ProfileController.js"></script>
+</body>
+</html>

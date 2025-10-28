@@ -1,0 +1,63 @@
+<div class="menu-container">
+    <h2>Pizza Menu</h2>
+
+    <div class="success" ng-if="menu.success">{{menu.success}}</div>
+    <div class="error" ng-if="menu.error">{{menu.error}}</div>
+
+    <div class="loading" ng-if="menu.isLoading">Loading menu...</div>
+
+    <!-- Pre-made Pizzas -->
+    <div class="pizzas-grid" ng-if="!menu.isLoading">
+        <div class="pizza-card" ng-repeat="pizza in menu.pizzas">
+            <h3>{{pizza.name}}</h3>
+            <p class="size">Size: {{pizza.size}}</p>
+            <p class="toppings" ng-if="pizza.toppings.length > 0">
+                Toppings: <span ng-repeat="topping in pizza.toppings">{{topping.name}}<span ng-if="!$last">, </span></span>
+            </p>
+            <p class="allergens" ng-if="pizza.allergens.length > 0">
+                ⚠️ Contains: <span ng-repeat="allergen in pizza.allergens">{{allergen}}<span ng-if="!$last">, </span></span>
+            </p>
+            <p class="price">${{menu.calculatePizzaPrice(pizza)}}</p>
+            <button class="btn btn-primary" ng-click="menu.addToCart(pizza)">Add to Cart</button>
+        </div>
+    </div>
+
+    <!-- Custom Pizza Builder -->
+    <div class="custom-pizza-section">
+        <h3>🎨 Build Your Own Pizza</h3>
+        <form ng-submit="menu.createCustomPizza()">
+            <div class="form-group">
+                <label for="pizza-name">Pizza Name:</label>
+                <input type="text" id="pizza-name" ng-model="menu.customPizza.name" placeholder="My Special Pizza" required>
+            </div>
+
+            <div class="form-group">
+                <label for="size">Size:</label>
+                <select id="size" ng-model="menu.customPizza.size">
+                    <option value="small">Small (+$0.00)</option>
+                    <option value="medium">Medium (+$3.00)</option>
+                    <option value="large">Large (+$6.00)</option>
+                </select>
+            </div>
+
+            <div class="form-group">
+                <label>Toppings:</label>
+                <div class="toppings-grid">
+                    <div class="topping-item" ng-repeat="topping in menu.toppings">
+                        <label>
+                            <input type="checkbox" 
+                                   ng-checked="menu.isToppingSelected(topping)"
+                                   ng-click="menu.toggleTopping(topping)">
+                            {{topping.name}} (+${{topping.price.toFixed(2)}})
+                            <span class="allergens" ng-if="topping.allergens.length > 0">
+                                ({{topping.allergens.join(', ')}})
+                            </span>
+                        </label>
+                    </div>
+                </div>
+            </div>
+
+            <button type="submit" class="btn btn-success">Create Pizza</button>
+        </form>
+    </div>
+</div>

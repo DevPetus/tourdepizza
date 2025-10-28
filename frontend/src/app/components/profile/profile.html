@@ -1,0 +1,86 @@
+<div class="profile-container">
+    <h2>My Profile</h2>
+
+    <div class="loading" ng-if="profile.isLoading">Loading profile...</div>
+
+    <div class="error" ng-if="profile.error">{{profile.error}}</div>
+    <div class="success" ng-if="profile.success">{{profile.success}}</div>
+
+    <div ng-if="!profile.isLoading && profile.customer">
+        <!-- Customer Information -->
+        <div class="profile-section">
+            <h3>Personal Information</h3>
+            <form ng-submit="profile.updateProfile()">
+                <div class="form-group">
+                    <label for="name">Name:</label>
+                    <input type="text" id="name" ng-model="profile.customer.name" required>
+                </div>
+
+                <div class="form-group">
+                    <label for="email">Email:</label>
+                    <input type="email" id="email" ng-model="profile.customer.email" required>
+                </div>
+
+                <div class="form-group">
+                    <label for="phone">Phone:</label>
+                    <input type="tel" id="phone" ng-model="profile.customer.phone" required>
+                </div>
+
+                <button type="submit" class="btn btn-primary">Update Profile</button>
+            </form>
+        </div>
+
+        <!-- Allergies Section -->
+        <div class="profile-section">
+            <h3>🔒 Allergies (Securely Stored)</h3>
+            <p class="info">Your allergy information is encrypted and stored securely.</p>
+
+            <div class="allergies-list" ng-if="profile.allergies.length > 0">
+                <div class="allergy-item" ng-repeat="allergy in profile.allergies">
+                    <div class="allergy-info">
+                        <strong>{{allergy.name}}</strong>
+                        <span class="severity" ng-class="'severity-' + allergy.severity">
+                            {{allergy.severity}}
+                        </span>
+                        <p ng-if="allergy.notes" class="notes">{{allergy.notes}}</p>
+                    </div>
+                    <button class="btn btn-danger btn-small" ng-click="profile.removeAllergy(allergy.name)">
+                        Remove
+                    </button>
+                </div>
+            </div>
+
+            <div ng-if="profile.allergies.length === 0">
+                <p>No allergies recorded.</p>
+            </div>
+
+            <div class="add-allergy">
+                <h4>Add New Allergy</h4>
+                <form ng-submit="profile.addAllergy()">
+                    <div class="form-group">
+                        <label for="allergyName">Allergy Name:</label>
+                        <input type="text" id="allergyName" ng-model="profile.newAllergy.name" 
+                               placeholder="e.g., peanuts, dairy" required>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="severity">Severity:</label>
+                        <select id="severity" ng-model="profile.newAllergy.severity">
+                            <option value="mild">Mild</option>
+                            <option value="moderate">Moderate</option>
+                            <option value="severe">Severe</option>
+                        </select>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="notes">Notes (optional):</label>
+                        <textarea id="notes" ng-model="profile.newAllergy.notes" 
+                                  rows="2" placeholder="Additional information"></textarea>
+                    </div>
+
+                    <button type="submit" class="btn btn-success">Add Allergy</button>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
